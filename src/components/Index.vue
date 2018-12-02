@@ -17,7 +17,7 @@
   left: 20px;
 }
 .layout-nav {
-  width: 420px;
+  width: 500px;
   margin: 0 auto;
   margin-right: 20px;
 }
@@ -33,20 +33,29 @@
           <div class="layout-logo"></div>
           <div class="layout-nav">
             <MenuItem name="1">
+              <div @click="changePage('manageFinance')">
+                <Icon type="logo-usd"></Icon>Finance
+              </div>
+            </MenuItem>
+            <MenuItem name="2">
               <div @click="changePage('manageProduct')">
                 <Icon type="ios-keypad"></Icon>Product
               </div>
             </MenuItem>
-            <MenuItem name="2">
+            <MenuItem name="3">
               <div @click="changePage('manageAgent')">
                 <Icon type="ios-people"></Icon>Agent
               </div>
             </MenuItem>
-            <MenuItem name="3">
-              <Icon type="ios-analytics"></Icon>Item 3
-            </MenuItem>
             <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>Item 4
+              <div @click="changePage('manageOrder')">
+                <Icon type="ios-paper"></Icon>Order
+              </div>
+            </MenuItem>
+            <MenuItem name="5">
+              <div @click="changePage('manageMessage')">
+                <Icon type="ios-create"></Icon>Message
+              </div>
             </MenuItem>
           </div>
         </Menu>
@@ -64,19 +73,22 @@
                 </Card>
       </Content>-->
       <component v-bind:is="currentPage"></component>
-      <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+      <Footer class="layout-footer-center">2018 &copy; The Bag Company</Footer>
     </Layout>
   </div>
 </template>
 <script>
 import manageProduct from "@/components/manageProduct";
 import manageAgent from "@/components/manageAgent";
+import manageOrder from "@/components/manageOrder";
+import manageMessage from "@/components/manageMessage";
+import manageFinance from "@/components/manageFinance";
 export default {
   name: "index",
-  components: { manageProduct, manageAgent },
+  components: { manageProduct, manageAgent, manageOrder, manageMessage, manageFinance },
   data() {
     return {
-      currentPage: ""
+      currentPage: "manageFinance"
     };
   },
   methods: {
