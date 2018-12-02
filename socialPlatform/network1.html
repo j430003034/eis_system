@@ -19,23 +19,22 @@
 </head>
 <body>
     <div id="network1">
-        <i-button @click="show">Click me!</i-button>
-        <Modal v-model="visible" title="Welcome">Welcome to iView</Modal>
+        <!-- <i-button @click="show">Click me!</i-button>
+        <Modal v-model="visible" title="Welcome">Welcome to iView</Modal> -->
         <div style="height:200px; background-color:#13e3be; color:white">
             <h1 style="font-size:60px;margin-left: 60px;">SOCIAL PLATFORM</h1>
         </div>
         <Row type="flex" justify="center" style="margin-top:20px;">
             <i-col span="15">
-                <Card>
-                    <p slot="title">Agent Name</p>
-                    <p style="margin-bottom:10px;">this is message</p>
-                    <Card>
-                        product1
+                <div v-for="message in messages">
+                    <Card style="margin-bottom:20px;">
+                        <h1 slot="title">{{message.owner}}</h1>
+                        <p style="margin-bottom:10px;">{{message.content}}</p>
+                        <Card>
+                            product1
+                        </Card>
                     </Card>
-                    <Card>
-                        product111
-                    </Card>
-                </Card>
+                </v-for>
             </i-col>
         </Row>
     </div>

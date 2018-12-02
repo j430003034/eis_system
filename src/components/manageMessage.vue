@@ -159,7 +159,7 @@ export default {
       } else {
         var that = this;
         var newMessage = {
-          owner: "company",
+          owner: "Company",
           content: that.messageText,
           pid: that.messageProduct
         };
