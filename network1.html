@@ -14,13 +14,15 @@
             background-color:rgb(243, 248, 250)
         }
     </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/qs/6.5.2/qs.min.js"></script>
 </head>
 <body>
     <div id="network1">
-        <!-- <i-button @click="show">Click me!</i-button>
-        <Modal v-model="visible" title="Welcome">Welcome to iView</Modal> -->
+        <i-button @click="show">Click me!</i-button>
+        <Modal v-model="visible" title="Welcome">Welcome to iView</Modal>
         <div style="height:200px; background-color:#13e3be; color:white">
-            <h1 style="font-size:60px;margin-left: 60px;">SOCIAL PLATFORM 1</h1>
+            <h1 style="font-size:60px;margin-left: 60px;">SOCIAL PLATFORM</h1>
         </div>
         <Row type="flex" justify="center" style="margin-top:20px;">
             <i-col span="15">
@@ -31,7 +33,7 @@
                         product1
                     </Card>
                     <Card>
-                        product1
+                        product111
                     </Card>
                 </Card>
             </i-col>
@@ -41,14 +43,69 @@
     new Vue({
         el: '#network1',
         data: {
-            visible: false
+            visible: false,
+            messageText: "",
+            messageProduct: "",
+            messageId: null,
+            messages: new Array(),
+            productList: [],
+            isShowSubmitbutton: 0,
+            re: /^[1-9]+[0-9]*]*$/
         },
         methods: {
             show: function () {
-                this.visible = true;
+                this.visible = true
+                this.created()
+            },
+            async getMessageList () {
+                var that = this;
+                await axios
+                .get("http://localhost:1337/message/show")
+                .then(function(response) {
+                    var itemList = response.data.messages;
+                    console.log(itemList);
+
+                    for (var i = 0; i < itemList.length; i++) {
+                        var messageItem = {
+                            id: itemList[i].id,
+                            owner: itemList[i].owner,
+                            content: itemList[i].content,
+                            pid: itemList[i].pid,
+                            product: []
+                        };
+                        that.messages.push(messageItem);
+                    }
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+            },
+            async findOneProduct () {
+                for (var i = 0; i < this.messages.length; i++) {
+                    var that = this;
+                    await axios
+                    .post("http://localhost:1337/product/search", that.messages[i])
+                    .then(function(response) {
+                        that.messages[i].product = response.data.product;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }
+            },
+            async getAllMessage () {
+                this.messages = new Array();
+                await this.getMessageList();
+                await this.findOneProduct();
             }
+        },
+        created: function() {
+            this.getAllMessage();
+            console.log(this.messages);
         }
     })
   </script>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>

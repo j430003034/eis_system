@@ -9,60 +9,56 @@
         <div v-show="isShow0">
           <Row>
             <Col span="2" offset="1">
-              <Button type="primary" @click="toAddProduct">Add Product</Button>
+              <Button type="primary" @click="toAddMessage">Add Message</Button>
             </Col>
             <Col span="18">
-              <card style="background-color:grey;color:white" :dis-hover="true">
-                <Row style="height:10px;line-height:10px;">
-                  <Col span="4">
-                    <strong>Name</strong>
-                  </Col>
-                  <Col span="4">
-                    <strong>Type</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Color</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Size</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Price</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Quantity</strong>
-                  </Col>
-                </Row>
-              </card>
-              <div v-for="product in products">
-                <card style="margin-top:5px;">
-                  <Row style="height:30px;line-height:30px;">
-                    <Col span="4">
-                      <h2>{{product.pid}}</h2>
-                    </Col>
-                    <Col span="4">
-                      <p>{{product.pType}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.color}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.size}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.price}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.count}}</p>
-                    </Col>
-                    <Col span="2">
-                      <Button @click="toEditProduct(product)">Edit</Button>
-                    </Col>
-                    <Col span="2">
-                      <Button type="error" @click="delectProduct(product)">Delete</Button>
-                    </Col>
-                  </Row>
-                </card>
+              <div v-for="message in messages">
+                <div>
+                  <card style="margin-top:10px;">
+                    <Row>
+                      <Col span="4">
+                        <h2>{{message.owner}}</h2>
+                        {{message.content}}
+                      </Col>
+                      <Col span="19" offset="1">
+                        <card
+                          style="margin-top:5px; background-color:#e5eff2"
+                          :bordered="false"
+                          :dis-hover="true"
+                        >
+                          <Row style="text-align: center">
+                            <Col span="4">
+                              <strong>Product Information:</strong>
+                            </Col>
+                            <Col span="4">
+                              <p>Name: {{message.product.pid}}</p>
+                            </Col>
+                            <Col span="4">
+                              <p>Type: {{message.product.pType}}</p>
+                            </Col>
+                            <Col span="4">
+                              <p>Color: {{message.product.color}}</p>
+                            </Col>
+                            <Col span="4">
+                              <p>Size: {{message.product.size}}</p>
+                            </Col>
+                            <Col span="4">
+                              <p>Price: {{message.product.price}}</p>
+                            </Col>
+                          </Row>
+                        </card>
+                      </Col>
+                    </Row>
+                    <Row style="margin-top:10px;">
+                      <Col span="2" offset="20">
+                        <Button @click="toEditMessage(message)">Edit</Button>
+                      </Col>
+                      <Col span="2">
+                        <Button type="error" @click="delectMessage(message)">Delete</Button>
+                      </Col>
+                    </Row>
+                  </card>
+                </div>
               </div>
             </Col>
           </Row>
@@ -82,74 +78,30 @@
               <div>
                 <Row style="margin-top:30px;">
                   <Col span="8" style="text-align:right">
-                    <p>Product Name:</p>
+                    <p>Text:</p>
                   </Col>
                   <Col span="15" offset="1">
-                    <Input placeholder="Enter name" v-model="productName"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top: 20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Type:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <RadioGroup v-model="productType">
-                      <Radio label="backpack"></Radio>
-                      <Radio label="shoulderBag"></Radio>
-                    </RadioGroup>
+                    <Input type="textarea" placeholder="Enter something" v-model="messageText"/>
                   </Col>
                 </Row>
                 <Row style="margin-top:20px;">
                   <Col span="8" style="text-align:right">
-                    <p>Product Color:</p>
+                    <p>Product:</p>
                   </Col>
                   <Col span="15" offset="1">
-                    <Select v-model="productColor" placeholder="Select a color">
-                      <Option value="red">Red</Option>
-                      <Option value="blue">Blue</Option>
-                      <Option value="green">Green</Option>
-                      <Option value="yellow">Yellow</Option>
-                      <Option value="white">White</Option>
-                      <Option value="black">Black</Option>
+                    <Select v-model="messageProduct" placeholder="Select a color">
+                      <Option v-for="item in productList" :value="item.pid" :key="item.id">{{ item.pid }}</Option>
                     </Select>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Size:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <RadioGroup v-model="productSize">
-                      <Radio label="big"></Radio>
-                      <Radio label="medium"></Radio>
-                      <Radio label="small"></Radio>
-                    </RadioGroup>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Price:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter price" v-model="productPrice" Number="true"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Quantity:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter quantity" v-model="productQuantity" Number="true"/>
                   </Col>
                 </Row>
                 <Row style="margin-top:20px;">
                   <Col span="15" offset="9">
                     <div style="margin-top:30px;"></div>
                     <div v-if="isShowSubmitbutton==0">
-                      <Button type="primary" @click="createNewProduct">Create</Button>
+                      <Button type="primary" @click="createNewMessage">Create</Button>
                     </div>
                     <div v-else>
-                      <Button type="primary" @click="editProduct">Edit</Button>
+                      <Button type="primary" @click="editMessage">Edit</Button>
                     </div>
                   </Col>
                 </Row>
@@ -164,87 +116,57 @@
 <script>
 export default {
   name: "manageProduct",
-  components: { },
+  components: {},
   data() {
     return {
       isShow0: true,
       isShow1: false,
-      pageJump: "",
-      productId: null,
-      productName: "",
-      productType: "backpack",
-      productColor: "",
-      productSize: "big",
-      productPrice: 0,
-      productQuantity: 0,
-      productImgUrl: "xxx",
-      products: {},
+      messageText: "",
+      messageProduct: "",
+      messageId: null,
+      messages: new Array(),
+      productList: [],
       isShowSubmitbutton: 0,
-      isName: false,
       re: /^[1-9]+[0-9]*]*$/
     };
   },
   methods: {
-    toAddProduct: function() {
+    async toAddMessage () {
+      await this.getProductList();
       this.isShowSubmitbutton = 0;
-      this.isName = false;
       this.isShow0 = false;
       this.isShow1 = true;
     },
-    toEditProduct: function(product) {
-      this.productId = product.id;
-      this.productName = product.pid;
-      this.productType = product.pType;
-      this.productColor = product.color;
-      this.productSize = product.size;
-      this.productPrice = product.price;
-      this.productQuantity = product.count;
+    async toEditMessage (message) {
+      this.messageId = message.id;
+      this.messageText = message.content;
+      this.messageProduct = message.pid;
+      await this.getProductList();
       this.isShowSubmitbutton = 1;
-      this.isName = true;
       this.isShow0 = false;
       this.isShow1 = true;
     },
     goBack: function() {
-      (this.productId = null),
-        (this.productName = ""),
-        (this.productType = "backpack"),
-        (this.productColor = ""),
-        (this.productSize = "big"),
-        (this.productPrice = 0),
-        (this.productQuantity = 0),
-        (this.isShow0 = true);
+      this.messageId = null;
+      this.messageText = "";
+      this.messageProduct = "";
+      this.isShow0 = true;
       this.isShow1 = false;
     },
-    async createNewProduct() {
-      if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
-      ) {
+    async createNewMessage () {
+      if (this.messageText == "" || this.messageProduct == "") {
         alert("Input Data error!");
       } else {
         var that = this;
-        var newProduct = {
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
+        var newMessage = {
+          owner: "company",
+          content: that.messageText,
+          pid: that.messageProduct
         };
         await this.axios
-          .post("http://localhost:1337/product/create", newProduct)
+          .post("http://localhost:1337/message/create", newMessage)
           .then(function(response) {
-            console.log(response.data.product);
-            that.getProductList().then(res => {
-              console.log("here in create");
+            that.getAllMessage().then(res => {
               that.$Message.success("Success!");
               that.goBack();
             });
@@ -254,66 +176,91 @@ export default {
           });
       }
     },
-    async editProduct() {
-      if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
-      ) {
-        alert("Input Data error!");
-      } else {
-        var that = this;
-        var updateProduct = {
-          id: that.productId,
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
-        };
-        await this.axios
-          .post("http://localhost:1337/product/update", updateProduct)
-          .then(function(response) {
-            console.log("here");
-            that.getProductList().then(res => {
-              console.log("here in edit");
-              that.$Message.success("Success!");
-              that.goBack();
-            });
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    },
-    async getProductList() {
+    // async editMessage () {
+    //   if (this.messageText == "" || this.messageProduct == "") {
+    //     alert("Input Data error!");
+    //   } else {
+    //     var that = this;
+    //     var updateMessage = {
+    //       id: that.messageId,
+    //       owner: "company",
+    //       content: that.messageText,
+    //       pid: that.messageProduct
+    //     };
+    //     await this.axios
+    //       .post("http://localhost:1337/message/update", updateMessage)
+    //       .then(function(response) {
+    //         that.getAllMessage().then(res => {
+    //           that.$Message.success("Success!");
+    //           that.goBack();
+    //         });
+    //       })
+    //       .catch(function(error) {
+    //         console.log(error);
+    //       });
+    //   }
+    // },
+    async getMessageList () {
       var that = this;
       await this.axios
-        .get("http://localhost:1337/product/show")
+        .get("http://localhost:1337/message/show")
         .then(function(response) {
-          that.products = response.data.products;
-          console.log(that.products);
+          var itemList = response.data.messages;
+          console.log(itemList);
+
+          for (var i = 0; i < itemList.length; i++) {
+            var messageItem = {
+              id: itemList[i].id,
+              owner: itemList[i].owner,
+              content: itemList[i].content,
+              pid: itemList[i].pid,
+              product: []
+            };
+            that.messages.push(messageItem);
+          }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    async delectProduct(product) {
+    async findOneProduct () {
+      for (var i = 0; i < this.messages.length; i++) {
+        var that = this;
+        await this.axios
+          .post("http://localhost:1337/product/search", that.messages[i])
+          .then(function(response) {
+            that.messages[i].product = response.data.product;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    async getAllMessage () {
+      this.messages = new Array();
+      await this.getMessageList();
+      await this.findOneProduct();
+    },
+    // async delectMessage (message) {
+    //   var that = this;
+    //   await this.axios
+    //     .post("http://localhost:1337/message/delete", message)
+    //     .then(function(response) {
+    //       that.getAllMessage().then(res => {
+    //         that.$Message.success("Success!");
+    //       });
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+    async getProductList () {
       var that = this;
       await this.axios
-        .post("http://localhost:1337/product/delete", product)
+        .get("http://localhost:1337/product/show")
         .then(function(response) {
-          that.getProductList().then(res => {
-            that.$Message.success("Success!");
-          });
+          that.productList = response.data.products;
+          console.log(that.productList);
         })
         .catch(function(error) {
           console.log(error);
@@ -321,7 +268,8 @@ export default {
     }
   },
   created: function() {
-    this.getProductList();
+    this.getAllMessage();
+    console.log(this.messages);
   }
 };
 </script>
