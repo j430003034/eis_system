@@ -2,10 +2,10 @@
   <Content :style="{padding: '0 50px'}">
     <Breadcrumb :style="{margin: '20px 0'}">
       <BreadcrumbItem>Home</BreadcrumbItem>
-      <BreadcrumbItem>Product</BreadcrumbItem>
+      <BreadcrumbItem>Message</BreadcrumbItem>
     </Breadcrumb>
     <Card>
-      <div style="min-height: 700px;">
+      <div style="min-height: 800px;">
         <div v-show="isShow0">
           <Row>
             <Col span="2" offset="1">
@@ -14,7 +14,7 @@
             <Col span="18">
               <div v-for="message in messages">
                 <div>
-                  <card style="margin-top:10px;">
+                  <card style="margin-bottom:10px;">
                     <Row>
                       <Col span="4">
                         <h2>{{message.owner}}</h2>
@@ -176,30 +176,30 @@ export default {
           });
       }
     },
-    // async editMessage () {
-    //   if (this.messageText == "" || this.messageProduct == "") {
-    //     alert("Input Data error!");
-    //   } else {
-    //     var that = this;
-    //     var updateMessage = {
-    //       id: that.messageId,
-    //       owner: "company",
-    //       content: that.messageText,
-    //       pid: that.messageProduct
-    //     };
-    //     await this.axios
-    //       .post("http://localhost:1337/message/update", updateMessage)
-    //       .then(function(response) {
-    //         that.getAllMessage().then(res => {
-    //           that.$Message.success("Success!");
-    //           that.goBack();
-    //         });
-    //       })
-    //       .catch(function(error) {
-    //         console.log(error);
-    //       });
-    //   }
-    // },
+    async editMessage () {
+      if (this.messageText == "" || this.messageProduct == "") {
+        alert("Input Data error!");
+      } else {
+        var that = this;
+        var updateMessage = {
+          id: that.messageId,
+          owner: "Company",
+          content: that.messageText,
+          pid: that.messageProduct
+        };
+        await this.axios
+          .post("http://localhost:1337/message/update", updateMessage)
+          .then(function(response) {
+            that.getAllMessage().then(res => {
+              that.$Message.success("Success!");
+              that.goBack();
+            });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
     async getMessageList () {
       var that = this;
       await this.axios
@@ -241,19 +241,19 @@ export default {
       await this.getMessageList();
       await this.findOneProduct();
     },
-    // async delectMessage (message) {
-    //   var that = this;
-    //   await this.axios
-    //     .post("http://localhost:1337/message/delete", message)
-    //     .then(function(response) {
-    //       that.getAllMessage().then(res => {
-    //         that.$Message.success("Success!");
-    //       });
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
-    // },
+    async delectMessage (message) {
+      var that = this;
+      await this.axios
+        .post("http://localhost:1337/message/delete", message)
+        .then(function(response) {
+          that.getAllMessage().then(res => {
+            that.$Message.success("Success!");
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     async getProductList () {
       var that = this;
       await this.axios

@@ -5,7 +5,7 @@
       <BreadcrumbItem>Product</BreadcrumbItem>
     </Breadcrumb>
     <Card>
-      <div style="min-height: 700px;">
+      <div style="min-height: 800px;">
         <div v-show="isShow0">
           <Row>
             <Col span="2" offset="1">

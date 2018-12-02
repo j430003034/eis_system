@@ -19,9 +19,60 @@
 </head>
 <body>
     <div id="network1">
-        <!-- <i-button @click="show">Click me!</i-button>
-        <Modal v-model="visible" title="Welcome">Welcome to iView</Modal> -->
-        <div style="height:200px; background-color:#13e3be; color:white">
+        <Modal v-model="visible">
+            <div>
+                <Row style="margin-top:30px;height:50px; line-height: 50px;">
+                    <i-col span="6" style="text-align:right">
+                        <h2>{{productName}}</h2>
+                    </i-col>
+                    <i-col span="13" style="text-align:right">
+                            <p>Total price:</p>
+                    </i-col>
+                    <i-col span="4" offset="1" style="text-align:left">
+                            <h2>$ {{calculateFee}}</h2>
+                    </i-col>
+                </Row>
+                <Row style="margin-top:30px;">
+                    <i-col span="6" style="text-align:right">
+                        <p>Name:</p>
+                    </i-col>
+                    <i-col span="16" offset="1">
+                        <i-input placeholder="Please enter your name..." v-model="customerName"/>
+                    </i-col>
+                </Row>
+                <Row style="margin-top: 20px;">
+                    <i-col span="6" style="text-align:right">
+                        <p>Phone Number:</p>
+                    </i-col>
+                    <i-col span="16" offset="1">
+                        <i-input placeholder="Please enter your phone number..." v-model="phoneNumber"/>
+                    </i-col>
+                </Row>
+                <Row style="margin-top: 20px;">
+                    <i-col span="6" style="text-align:right">
+                        <p>Address:</p>
+                    </i-col>
+                    <i-col span="16" offset="1">
+                        <i-input placeholder="Please enter your address..." v-model="address"/>
+                    </i-col>
+                </Row>
+                <Row style="margin-top: 20px;height: 50px; line-height: 50px;">
+                    <i-col span="6" style="text-align:right">
+                        <p>Amount:</p>
+                    </i-col>
+                    <i-col span="4" offset="1">
+                        <input-number :min="1" v-model="amount" size="small"></input-number>
+                    </i-col>
+                    <i-col span="5" style="text-align:left">
+                        <Strong>&nbsp;&nbsp;/ {{productQuantity}}</Strong>
+                    </i-col>
+                </Row>
+            </div>
+            <div slot="footer">
+                <i-button type="info" size="large" @click="createOrder()">BUY</i-button>
+            </div>
+        </Modal>
+        <div style="height:200px; line-height: 200px; background-color:#13e3be; color:white">
             <h1 style="font-size:60px;margin-left: 60px;">SOCIAL PLATFORM</h1>
         </div>
         <Row type="flex" justify="center" style="margin-top:20px;">
@@ -29,32 +80,95 @@
                 <div v-for="message in messages">
                     <Card style="margin-bottom:20px;">
                         <h1 slot="title">{{message.owner}}</h1>
-                        <p style="margin-bottom:10px;">{{message.content}}</p>
-                        <Card>
-                            product1
-                        </Card>
-                    </Card>
+                        <strong style="margin-bottom:10px;">{{message.content}}</strong>
+                            <card
+                            style="margin-top:5px; background-color:#e5eff2"
+                            :bordered="false"
+                            :dis-hover="true"
+                            >
+                        <Row style="height:30px;line-height:30px; text-align: center">
+                            <i-col span="3">
+                                <h4>{{message.product.pid}}</h4>
+                            </i-col>
+                            <i-col span="4">
+                                <p>Type: {{message.product.pType}}</p>
+                            </i-col>
+                            <i-col span="3">
+                                <p>Color: {{message.product.color}}</p>
+                            </i-col>
+                            <i-col span="3">
+                                <p>Size: {{message.product.size}}</p>
+                            </i-col>
+                            <i-col span="3">
+                                <p>{{message.product.count}} bags left</p>
+                            </i-col>
+                            <i-col span="3">
+                                <h4>$ {{message.product.price}}</h4>
+                            </i-col>
+                            <i-col span="2" offset="1" >
+                                <i-button type="info" @click="show(message)">Buy it !</i-button>
+                            </i-col>
+                        </Row>
+                    </card>
                 </v-for>
             </i-col>
         </Row>
     </div>
     <script>
-    new Vue({
+    var vm = new Vue({
         el: '#network1',
         data: {
             visible: false,
             messageText: "",
             messageProduct: "",
             messageId: null,
+            productName: "",
+            productPrice: 0,
+            orderId: "",
+            date: "",
+            customerName: "",
+            phoneNumber: "",
+            address: "",
+            productQuantity: 0,
+            amount: 1,
+            fee: 0,
+            owner: "",
             messages: new Array(),
             productList: [],
             isShowSubmitbutton: 0,
             re: /^[1-9]+[0-9]*]*$/
         },
         methods: {
-            show: function () {
+            show: function (message) {
                 this.visible = true
-                this.created()
+                this.productName = message.pid
+                var randomOid = this.getRandom(10);
+                this.orderId = randomOid;
+                console.log(this.orderId);
+                var orderDate = new Date();
+                var month = orderDate.getMonth()*1+1
+                this.date = orderDate.getFullYear()+'/'+month+'/'+orderDate.getDate()
+                console.log(this.date);
+                this.owner = message.owner;
+                this.productPrice = message.product.price;
+                this.productQuantity = message.product.count;
+                console.log(this.productPrice);
+                
+            },
+            clearFromData: function () {       
+                this.orderId = ""
+                this.date = ""
+                this.customerName = ""
+                this.phoneNumber = ""
+                this.address = ""
+                this.productName = ""
+                this.amount = 1
+                this.calculateFee = 0
+                this.owner = ""   
+            },
+            getRandom: function (num){
+                var random = Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,9));
+                return random
             },
             async getMessageList () {
                 var that = this;
@@ -96,11 +210,54 @@
                 this.messages = new Array();
                 await this.getMessageList();
                 await this.findOneProduct();
+            },
+            async createOrder () {
+                if (this.customerName == "" || 
+                    this.phoneNumber == ""  ||
+                    this.address == ""||
+                    this.amount == null) {
+                    this.$Message.error('Please input data');
+                } else if (this.amount > this.productQuantity) {
+                    this.$Message.error('Inventory shortage');
+                } else {
+                    var newOrder = {
+                        oid: this.orderId,
+                        date: this.date,
+                        cname: this.customerName,
+                        phoneNumber: this.phoneNumber,
+                        address: this.address,
+                        pid: this.productName,
+                        amount: this.amount,
+                        fee: this.calculateFee,
+                        owner: this.owner,
+                        confirmedState: false
+                    }
+                    console.log(newOrder)
+                    var that = this
+                    await axios
+                    .post("http://localhost:1337/order/create", newOrder)
+                    .then(function(response) {
+                        that.getAllMessage().then(res => {
+                            that.$Message.success("Success!");
+                            that.amount = 1
+                            that.visible = false
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }
             }
         },
         created: function() {
             this.getAllMessage();
             console.log(this.messages);
+        },
+        computed: {
+            calculateFee: function () {
+                this.fee = this.amount * this.productPrice
+                return this.fee
+            }
         }
     })
   </script>

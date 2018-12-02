@@ -2,67 +2,51 @@
   <Content :style="{padding: '0 50px'}">
     <Breadcrumb :style="{margin: '20px 0'}">
       <BreadcrumbItem>Home</BreadcrumbItem>
-      <BreadcrumbItem>Product</BreadcrumbItem>
+      <BreadcrumbItem>Agent</BreadcrumbItem>
     </Breadcrumb>
     <Card>
-      <div style="min-height: 700px;">
+      <div style="min-height: 800px;">
         <div v-show="isShow0">
           <Row>
             <Col span="2" offset="1">
-              <Button type="primary" @click="toAddProduct">Add Product</Button>
+              <Button type="primary" @click="toAddAgent">Add Agent</Button>
             </Col>
             <Col span="18">
               <card style="background-color:grey;color:white" :dis-hover="true">
-                <Row style="height:10px;line-height:10px;">
-                  <Col span="4">
+                <Row style="height:10px;line-height:10px; text-align: center">
+                  <Col span="5">
                     <strong>Name</strong>
                   </Col>
-                  <Col span="4">
-                    <strong>Type</strong>
+                  <Col span="5">
+                    <strong>Phone Number</strong>
                   </Col>
-                  <Col span="3">
-                    <strong>Color</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Size</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Price</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Quantity</strong>
+                  <Col span="5">
+                    <strong>Address</strong>
                   </Col>
                 </Row>
               </card>
-              <div v-for="product in products">
-                <card style="margin-top:5px;">
-                  <Row style="height:30px;line-height:30px;">
-                    <Col span="4">
-                      <h2>{{product.pid}}</h2>
-                    </Col>
-                    <Col span="4">
-                      <p>{{product.pType}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.color}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.size}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.price}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.count}}</p>
-                    </Col>
-                    <Col span="2">
-                      <Button @click="toEditProduct(product)">Edit</Button>
-                    </Col>
-                    <Col span="2">
-                      <Button type="error" @click="delectProduct(product)">Delete</Button>
-                    </Col>
-                  </Row>
-                </card>
+              <div v-for="agent in agents">
+                <div v-if="agent.position == 'agent'">
+                  <card style="margin-top:5px;">
+                    <Row style="height:30px;line-height:30px; text-align: center">
+                      <Col span="5">
+                        <h2>{{agent.username}}</h2>
+                      </Col>
+                      <Col span="5">
+                        <p>{{agent.phoneNumber}}</p>
+                      </Col>
+                      <Col span="5">
+                        <p>{{agent.address}}</p>
+                      </Col>
+                      <Col span="2" offset="5">
+                        <Button @click="toEditAgent(agent)">Edit</Button>
+                      </Col>
+                      <Col span="2">
+                        <Button type="error" @click="deleteAgent(agent)">Delete</Button>
+                      </Col>
+                    </Row>
+                  </card>
+                </div>
               </div>
             </Col>
           </Row>
@@ -80,76 +64,38 @@
             </Col>
             <Col span="10">
               <div>
-                <Row style="margin-top:30px;">
+                <Row style="margin-bottom:30px;">
                   <Col span="8" style="text-align:right">
-                    <p>Product Name:</p>
+                    <p>Agent Name:</p>
                   </Col>
                   <Col span="15" offset="1">
-                    <Input placeholder="Enter name" v-model="productName"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top: 20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Type:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <RadioGroup v-model="productType">
-                      <Radio label="backpack"></Radio>
-                      <Radio label="shoulderBag"></Radio>
-                    </RadioGroup>
+                    <Input placeholder="Enter name" v-model="agentName"/>
                   </Col>
                 </Row>
                 <Row style="margin-top:20px;">
                   <Col span="8" style="text-align:right">
-                    <p>Product Color:</p>
+                    <p>Phone Number:</p>
                   </Col>
                   <Col span="15" offset="1">
-                    <Select v-model="productColor" placeholder="Select a color">
-                      <Option value="red">Red</Option>
-                      <Option value="blue">Blue</Option>
-                      <Option value="green">Green</Option>
-                      <Option value="yellow">Yellow</Option>
-                      <Option value="white">White</Option>
-                      <Option value="black">Black</Option>
-                    </Select>
+                    <Input placeholder="Enter phone number" v-model="agentPhone"/>
                   </Col>
                 </Row>
                 <Row style="margin-top:20px;">
                   <Col span="8" style="text-align:right">
-                    <p>Product Size:</p>
+                    <p>Address:</p>
                   </Col>
                   <Col span="15" offset="1">
-                    <RadioGroup v-model="productSize">
-                      <Radio label="big"></Radio>
-                      <Radio label="medium"></Radio>
-                      <Radio label="small"></Radio>
-                    </RadioGroup>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Price:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter price" v-model="productPrice" Number="true"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Quantity:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter quantity" v-model="productQuantity" Number="true"/>
+                    <Input placeholder="Enter address" v-model="agentAddress"/>
                   </Col>
                 </Row>
                 <Row style="margin-top:20px;">
                   <Col span="15" offset="9">
                     <div style="margin-top:30px;"></div>
                     <div v-if="isShowSubmitbutton==0">
-                      <Button type="primary" @click="createNewProduct">Create</Button>
+                      <Button type="primary" @click="createNewAgent">Create</Button>
                     </div>
                     <div v-else>
-                      <Button type="primary" @click="editProduct">Edit</Button>
+                      <Button type="primary" @click="editAgent">Edit</Button>
                     </div>
                   </Col>
                 </Row>
@@ -164,87 +110,65 @@
 <script>
 export default {
   name: "manageProduct",
-  components: { },
+  components: {},
   data() {
     return {
       isShow0: true,
       isShow1: false,
-      pageJump: "",
-      productId: null,
-      productName: "",
-      productType: "backpack",
-      productColor: "",
-      productSize: "big",
-      productPrice: 0,
-      productQuantity: 0,
-      productImgUrl: "xxx",
-      products: {},
+      agentName: "",
+      agentPhone: "",
+      agentAddress: "",
+      agentId: null,
       isShowSubmitbutton: 0,
-      isName: false,
+      agents: {},
       re: /^[1-9]+[0-9]*]*$/
     };
   },
   methods: {
-    toAddProduct: function() {
+    toAddAgent: function() {
       this.isShowSubmitbutton = 0;
-      this.isName = false;
       this.isShow0 = false;
       this.isShow1 = true;
     },
-    toEditProduct: function(product) {
-      this.productId = product.id;
-      this.productName = product.pid;
-      this.productType = product.pType;
-      this.productColor = product.color;
-      this.productSize = product.size;
-      this.productPrice = product.price;
-      this.productQuantity = product.count;
+    toEditAgent: function(agent) {
+      this.agentName = agent.username;
+      this.agentPhone = agent.phoneNumber;
+      this.agentAddress = agent.address;
+      this.agentId = agent.id;
       this.isShowSubmitbutton = 1;
-      this.isName = true;
       this.isShow0 = false;
       this.isShow1 = true;
     },
     goBack: function() {
-      (this.productId = null),
-        (this.productName = ""),
-        (this.productType = "backpack"),
-        (this.productColor = ""),
-        (this.productSize = "big"),
-        (this.productPrice = 0),
-        (this.productQuantity = 0),
-        (this.isShow0 = true);
+      this.agentName = "";
+      this.agentPhone = "";
+      this.agentAddress = "";
+      this.agentId = null;
+      this.isShow0 = true;
       this.isShow1 = false;
     },
-    async createNewProduct() {
+    async createNewAgent() {
       if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
+        this.agentName == "" ||
+        this.agentPhone == "" ||
+        this.agentAddress == ""
       ) {
-        alert("Input Data error!");
+        this.$Message.error("Input Data Error");
       } else {
         var that = this;
-        var newProduct = {
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
+        var newAgent = {
+          username: that.agentName,
+          position: "agent",
+          phoneNumber: that.agentPhone,
+          address: that.agentAddress,
+          password: "123456"
         };
         await this.axios
-          .post("http://localhost:1337/product/create", newProduct)
+          .post("http://localhost:1337/user/create", newAgent)
           .then(function(response) {
-            console.log(response.data.product);
-            that.getProductList().then(res => {
-              console.log("here in create");
+            console.log('11111111');
+      
+            that.getAgentList().then(res => {
               that.$Message.success("Success!");
               that.goBack();
             });
@@ -254,37 +178,27 @@ export default {
           });
       }
     },
-    async editProduct() {
+    async editAgent() {
       if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
+        this.agentName == "" ||
+        this.agentPhone == "" ||
+        this.agentAddress == ""
       ) {
-        alert("Input Data error!");
+        this.$Message.error("Input Data Error");
       } else {
         var that = this;
-        var updateProduct = {
-          id: that.productId,
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
+        var updateAgent = {
+          id: that.agentId,
+          username: that.agentName,
+          position: "agent",
+          phoneNumber: that.agentPhone,
+          address: that.agentAddress,
+          password: "123456"
         };
         await this.axios
-          .post("http://localhost:1337/product/update", updateProduct)
+          .post("http://localhost:1337/user/update", updateAgent)
           .then(function(response) {
-            console.log("here");
-            that.getProductList().then(res => {
-              console.log("here in edit");
+            that.getAgentList().then(res => {
               that.$Message.success("Success!");
               that.goBack();
             });
@@ -294,25 +208,26 @@ export default {
           });
       }
     },
-    async getProductList() {
+    async getAgentList() {
       var that = this;
       await this.axios
-        .get("http://localhost:1337/product/show")
+        .get("http://localhost:1337/user/show")
         .then(function(response) {
-          that.products = response.data.products;
-          console.log(that.products);
+          that.agents = response.data.users;
+          console.log(that.agents);
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    async delectProduct(product) {
+    async deleteAgent(agent) {
       var that = this;
       await this.axios
-        .post("http://localhost:1337/product/delete", product)
+        .post("http://localhost:1337/user/delete", agent)
         .then(function(response) {
-          that.getProductList().then(res => {
+          that.getAgentList().then(res => {
             that.$Message.success("Success!");
+            that.goBack();
           });
         })
         .catch(function(error) {
@@ -321,7 +236,7 @@ export default {
     }
   },
   created: function() {
-    this.getProductList();
+    this.getAgentList();
   }
 };
 </script>
