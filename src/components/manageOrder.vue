@@ -41,7 +41,6 @@
               </card>
               <div v-if="userCookieName == 'Company'"> 
                 <div v-for="order in orders">
-
                     <div v-if="order.confirmedState == orderState">
                       <card style="margin-top:10px;">
                         <Row style="height:30px;line-height:30px; text-align: center">
@@ -261,6 +260,7 @@ export default {
             console.log(error);
           });
       }
+      console.log(that.orders);
     },
     async getAllOrders() {
       this.orders = new Array();
@@ -296,7 +296,7 @@ export default {
     }
   },
   created: async function() {
-    this.getAllOrders();
+    await this.getAllOrders();
     console.log(this.orders);
     this.userCookieName = this.$cookieStore.getCookie("username");
   }

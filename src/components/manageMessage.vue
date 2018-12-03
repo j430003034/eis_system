@@ -322,8 +322,8 @@ export default {
         });
     }
   },
-  created: function() {
-    this.getAllMessage();
+  created: async function() {
+    await this.getAllMessage();
     console.log(this.messages);
     this.userCookieName = this.$cookieStore.getCookie("username");
   }
