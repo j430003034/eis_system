@@ -2,159 +2,33 @@
   <Content :style="{padding: '0 50px'}">
     <Breadcrumb :style="{margin: '20px 0'}">
       <BreadcrumbItem>Home</BreadcrumbItem>
-      <BreadcrumbItem>Product</BreadcrumbItem>
+      <BreadcrumbItem>Finance</BreadcrumbItem>
     </Breadcrumb>
     <Card>
       <div style="min-height: 800px;">
         <div v-show="isShow0">
-          <Row>
-            <Col span="2" offset="1">
-              <Button type="primary" @click="toAddProduct">Add Product</Button>
-            </Col>
-            <Col span="18">
-              <card style="background-color:grey;color:white" :dis-hover="true">
-                <Row style="height:10px;line-height:10px;">
-                  <Col span="4">
-                    <strong>Name</strong>
-                  </Col>
-                  <Col span="4">
-                    <strong>Type</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Color</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Size</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Price</strong>
-                  </Col>
-                  <Col span="3">
-                    <strong>Quantity</strong>
-                  </Col>
-                </Row>
-              </card>
-              <div v-for="product in products">
-                <card style="margin-top:5px;">
-                  <Row style="height:30px;line-height:30px;">
-                    <Col span="4">
-                      <h2>{{product.pid}}</h2>
-                    </Col>
-                    <Col span="4">
-                      <p>{{product.pType}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.color}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.size}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.price}}</p>
-                    </Col>
-                    <Col span="3">
-                      <p>{{product.count}}</p>
-                    </Col>
-                    <Col span="2">
-                      <Button @click="toEditProduct(product)">Edit</Button>
-                    </Col>
-                    <Col span="2">
-                      <Button type="error" @click="delectProduct(product)">Delete</Button>
-                    </Col>
+          <div style="margin-bottom:20px;margin-top:20px;">Total sale: <h1 style="font-size:60px;color:#13e3be">$ {{totalSale}}</h1></div>
+          <Row :gutter="16">
+            <div v-for="agent in agents">
+              <Col span="8">
+                <card>
+                  <h3>{{agent.username}}</h3>
+                  <h4>Personal sale: {{agent.personalSale}}</h4>
+                  <Row type="flex" justify="space-between" style="background-color:#EEF6F8;margin-top:10px;">
+                    <Col span="7">Product Name</Col>
+                    <Col span="7">Product Number</Col>
+                    <Col span="7">Product Sale</Col>
                   </Row>
+                  <div v-for="product in agent.personalSaleProduct">
+                    <Row type="flex" justify="space-between">
+                      <Col span="7">{{product.id}}</Col>
+                      <Col span="7">{{product.number}}</Col>
+                      <Col span="7">$ {{product.sale}}</Col>
+                    </Row>
+                  </div>
                 </card>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        <div v-show="isShow1">
-          <Row>
-            <Col span="1" offset="2">
-              <Button
-                shape="circle"
-                type="info"
-                style="margin-top:30px;"
-                icon="ios-arrow-back"
-                @click="goBack"
-              ></Button>
-            </Col>
-            <Col span="10">
-              <div>
-                <Row style="margin-top:30px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Name:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter name" v-model="productName"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top: 20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Type:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <RadioGroup v-model="productType">
-                      <Radio label="backpack"></Radio>
-                      <Radio label="shoulderBag"></Radio>
-                    </RadioGroup>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Color:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Select v-model="productColor" placeholder="Select a color">
-                      <Option value="red">Red</Option>
-                      <Option value="blue">Blue</Option>
-                      <Option value="green">Green</Option>
-                      <Option value="yellow">Yellow</Option>
-                      <Option value="white">White</Option>
-                      <Option value="black">Black</Option>
-                    </Select>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Size:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <RadioGroup v-model="productSize">
-                      <Radio label="big"></Radio>
-                      <Radio label="medium"></Radio>
-                      <Radio label="small"></Radio>
-                    </RadioGroup>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Price:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter price" v-model="productPrice" Number="true"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="8" style="text-align:right">
-                    <p>Product Quantity:</p>
-                  </Col>
-                  <Col span="15" offset="1">
-                    <Input placeholder="Enter quantity" v-model="productQuantity" Number="true"/>
-                  </Col>
-                </Row>
-                <Row style="margin-top:20px;">
-                  <Col span="15" offset="9">
-                    <div style="margin-top:30px;"></div>
-                    <div v-if="isShowSubmitbutton==0">
-                      <Button type="primary" @click="createNewProduct">Create</Button>
-                    </div>
-                    <div v-else>
-                      <Button type="primary" @click="editProduct">Edit</Button>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+              </Col>
+            </div>
           </Row>
         </div>
       </div>
@@ -163,165 +37,92 @@
 </template>
 <script>
 export default {
-  name: "manageProduct",
-  components: { },
+  name: "manageFinance",
+  components: {},
   data() {
     return {
       isShow0: true,
-      isShow1: false,
-      pageJump: "",
-      productId: null,
-      productName: "",
-      productType: "backpack",
-      productColor: "",
-      productSize: "big",
-      productPrice: 0,
-      productQuantity: 0,
-      productImgUrl: "xxx",
-      products: {},
-      isShowSubmitbutton: 0,
-      isName: false,
+      totalSale: 0,
+      personalSale: 0,
+      agents: new Array(),
       re: /^[1-9]+[0-9]*]*$/
     };
   },
   methods: {
-    toAddProduct: function() {
-      this.isShowSubmitbutton = 0;
-      this.isName = false;
-      this.isShow0 = false;
-      this.isShow1 = true;
+    async getTotalSale() {
+      var that = this;
+      await this.axios
+        .get("http://localhost:1337/order/totalSales")
+        .then(function(response) {
+          that.totalSale = response.data.count;
+          console.log(that.totalSale);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    toEditProduct: function(product) {
-      this.productId = product.id;
-      this.productName = product.pid;
-      this.productType = product.pType;
-      this.productColor = product.color;
-      this.productSize = product.size;
-      this.productPrice = product.price;
-      this.productQuantity = product.count;
-      this.isShowSubmitbutton = 1;
-      this.isName = true;
-      this.isShow0 = false;
-      this.isShow1 = true;
+    async getAgent() {
+      var that = this;
+      await this.axios
+        .get("http://localhost:1337/user/show")
+        .then(function(response) {
+          var itemList = response.data.users;
+          console.log(itemList);
+
+          for (var i = 0; i < itemList.length; i++) {
+            var agentItem = {
+              username: itemList[i].username,
+              personalSale: "",
+              personalSaleProduct: new Array()
+            };
+            that.agents.push(agentItem);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    goBack: function() {
-      (this.productId = null),
-        (this.productName = ""),
-        (this.productType = "backpack"),
-        (this.productColor = ""),
-        (this.productSize = "big"),
-        (this.productPrice = 0),
-        (this.productQuantity = 0),
-        (this.isShow0 = true);
-      this.isShow1 = false;
-    },
-    async createNewProduct() {
-      if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
-      ) {
-        alert("Input Data error!");
-      } else {
-        var that = this;
-        var newProduct = {
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
-        };
+    async getOwnerSale() {
+      var that = this;
+      for (var i = 0; i < this.agents.length; i++) {
         await this.axios
-          .post("http://localhost:1337/product/create", newProduct)
+          .post("http://localhost:1337/order/personalSale", that.agents[i])
           .then(function(response) {
-            console.log(response.data.product);
-            that.getProductList().then(res => {
-              console.log("here in create");
-              that.$Message.success("Success!");
-              that.goBack();
-            });
+            that.agents[i].personalSale = response.data;
           })
           .catch(function(error) {
             console.log(error);
           });
       }
     },
-    async editProduct() {
-      if (
-        this.productName == "" ||
-        this.productColor == "" ||
-        this.productPrice == "" ||
-        this.re.test(this.productPrice) == false ||
-        this.productPrice < 0 ||
-        this.productQuantity == "" ||
-        this.re.test(this.productQuantity) == false ||
-        this.productQuantity < 0 ||
-        this.productImgUrl == ""
-      ) {
-        alert("Input Data error!");
-      } else {
-        var that = this;
-        var updateProduct = {
-          id: that.productId,
-          pid: that.productName,
-          img: that.productImgUrl,
-          pType: that.productType,
-          color: that.productColor,
-          size: that.productSize,
-          price: that.productPrice,
-          count: that.productQuantity
-        };
+    async getOwnerProduct() {
+      var that = this;
+      for (var i = 0; i < this.agents.length; i++) {
         await this.axios
-          .post("http://localhost:1337/product/update", updateProduct)
+          .post("http://localhost:1337/order/orderCount", that.agents[i])
           .then(function(response) {
-            console.log("here");
-            that.getProductList().then(res => {
-              console.log("here in edit");
-              that.$Message.success("Success!");
-              that.goBack();
-            });
+            console.log(response.data[0]);
+
+            for (var k = 0; k < response.data.length; k++) {
+              that.agents[i].personalSaleProduct.push(response.data[k]);
+            }
           })
           .catch(function(error) {
             console.log(error);
           });
       }
     },
-    async getProductList() {
-      var that = this;
-      await this.axios
-        .get("http://localhost:1337/product/show")
-        .then(function(response) {
-          that.products = response.data.products;
-          console.log(that.products);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    async delectProduct(product) {
-      var that = this;
-      await this.axios
-        .post("http://localhost:1337/product/delete", product)
-        .then(function(response) {
-          that.getProductList().then(res => {
-            that.$Message.success("Success!");
-          });
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+    async getAllAgentProduct() {
+      this.agents = new Array();
+      await this.getAgent();
+      await this.getOwnerSale();
+      await this.getOwnerProduct();
+      console.log(this.agents);
     }
   },
-  created: function() {
-    this.getProductList();
+  async created() {
+    await this.getTotalSale();
+    await this.getAllAgentProduct();
   }
 };
 </script>

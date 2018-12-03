@@ -30,9 +30,11 @@
     <Layout>
       <Header>
         <Menu mode="horizontal" theme="dark" active-name="1">
-          <div class="layout-logo"></div>
+          <div class="layout-logo">
+            <Button type="error" style="margin-bottom:30px;" @click="logout()">Log out</Button>
+          </div>
           <div class="layout-nav">
-            <MenuItem name="1">
+            <MenuItem name="1" v-if="(userCookieName=='Company')">
               <div @click="changePage('manageFinance')">
                 <Icon type="logo-usd"></Icon>Finance
               </div>
@@ -42,7 +44,7 @@
                 <Icon type="ios-keypad"></Icon>Product
               </div>
             </MenuItem>
-            <MenuItem name="3">
+            <MenuItem name="3" v-if="(userCookieName=='Company')">
               <div @click="changePage('manageAgent')">
                 <Icon type="ios-people"></Icon>Agent
               </div>
@@ -85,17 +87,33 @@ import manageMessage from "@/components/manageMessage";
 import manageFinance from "@/components/manageFinance";
 export default {
   name: "index",
-  components: { manageProduct, manageAgent, manageOrder, manageMessage, manageFinance },
+  components: {
+    manageProduct,
+    manageAgent,
+    manageOrder,
+    manageMessage,
+    manageFinance
+  },
   data() {
     return {
-      currentPage: "manageFinance"
+      currentPage: "manageOrder",
+      userCookieName: ""
     };
   },
   methods: {
     changePage: function(pageName) {
       this.currentPage = pageName;
       console.log(pageName);
+    },
+    logout: function() {
+      this.$cookieStore.delCookie("username");
+      this.$router.push({
+        name: "login"
+      });
     }
+  },
+  created() {
+    this.userCookieName = this.$cookieStore.getCookie("username");
   }
 };
 </script>

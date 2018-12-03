@@ -8,11 +8,17 @@ import iView from 'iview';
 import axios from 'axios'
 import Qs from 'qs'
 import 'iview/dist/styles/iview.css';
+import { setCookie, getCookie, delCookie } from './assets/cookie';
 
 Vue.use(VueRouter);
 Vue.use(iView);
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
+Vue.prototype.$cookieStore = {
+  setCookie,
+  getCookie,
+  delCookie
+};
 
 
 // The routing configuration

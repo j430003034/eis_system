@@ -9,7 +9,7 @@
         <div v-show="isShow0">
           <Row>
             <Col span="2" offset="1">
-              <Button type="primary" @click="toAddProduct">Add Product</Button>
+              <Button type="primary" @click="toAddProduct" v-if="userCookieName == 'Company'">Add Product</Button>
             </Col>
             <Col span="18">
               <card style="background-color:grey;color:white" :dis-hover="true">
@@ -55,10 +55,10 @@
                     <Col span="3">
                       <p>{{product.count}}</p>
                     </Col>
-                    <Col span="2">
+                    <Col span="2" v-if="userCookieName == 'Company'">
                       <Button @click="toEditProduct(product)">Edit</Button>
                     </Col>
-                    <Col span="2">
+                    <Col span="2" v-if="userCookieName == 'Company'">
                       <Button type="error" @click="delectProduct(product)">Delete</Button>
                     </Col>
                   </Row>
@@ -181,6 +181,7 @@ export default {
       products: {},
       isShowSubmitbutton: 0,
       isName: false,
+      userCookieName: "",
       re: /^[1-9]+[0-9]*]*$/
     };
   },
@@ -324,6 +325,7 @@ export default {
   },
   created: function() {
     this.getProductList();
+    this.userCookieName = this.$cookieStore.getCookie("username");
   }
 };
 </script>

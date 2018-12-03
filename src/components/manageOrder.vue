@@ -39,73 +39,149 @@
                   </Col>
                 </Row>
               </card>
-              <div v-for="order in orders">
-                <div v-if="order.confirmedState == orderState">
-                  <card style="margin-top:10px;">
-                    <Row style="height:30px;line-height:30px; text-align: center">
-                      <Col span="4">
-                        <h4>{{order.oid}}</h4>
-                      </Col>
-                      <Col span="4">
-                        <h4>{{order.owner}}</h4>
-                      </Col>
-                      <Col span="4">
-                        <p>{{order.cname}}</p>
-                      </Col>
-                      <Col span="4">
-                        <p>{{order.phoneNumber}}</p>
-                      </Col>
-                      <Col span="4">
-                        <p>{{order.address}}</p>
-                      </Col>
-                      <Col span="4">
-                        <p>{{order.date}}</p>
-                      </Col>
-                    </Row>
-                    <card
-                      style="margin-top:5px; background-color:#e5eff2"
-                      :bordered="false"
-                      :dis-hover="true"
-                    >
-                      <Row style="height:20px;line-height:20px; text-align: center">
-                        <Col span="4">
-                          <strong>Product Information:</strong>
-                        </Col>
-                        <Col span="5">
-                          <p>Name: {{order.product.pid}}</p>
-                        </Col>
-                        <Col span="5">
-                          <p>Type: {{order.product.pType}}</p>
-                        </Col>
-                        <Col span="5">
-                          <p>Color: {{order.product.color}}</p>
-                        </Col>
-                        <Col span="5">
-                          <p>Size: {{order.product.size}}</p>
-                        </Col>
-                      </Row>
-                    </card>
-                    <Row
-                      style="height:20px;line-height:20px; margin-top:10px; margin-bottom:20px; text-align: center"
-                    >
-                      <Col span="4">
-                        <p style="color:#9ea7b4">Total Price</p>
-                        <h2>${{order.fee}}</h2>
-                      </Col>
-                      <Col span="4">
-                        <p style="color:#9ea7b4">Quantity</p>
-                        <h2>{{order.amount}}</h2>
-                      </Col>
-                      <div v-if="order.confirmedState == false">
-                        <Col span="2" offset="12">
-                          <Button type="success" @click="comfirmOrder(order)">Comfirm</Button>
-                        </Col>
-                        <Col span="2">
-                          <Button type="error" @click="delectOrder(order)">Delete</Button>
-                        </Col>
-                      </div>
-                    </Row>
-                  </card>
+              <div v-if="userCookieName == 'Company'"> 
+                <div v-for="order in orders">
+
+                    <div v-if="order.confirmedState == orderState">
+                      <card style="margin-top:10px;">
+                        <Row style="height:30px;line-height:30px; text-align: center">
+                          <Col span="4">
+                            <h4>{{order.oid}}</h4>
+                          </Col>
+                          <Col span="4">
+                            <h4>{{order.owner}}</h4>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.cname}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.phoneNumber}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.address}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.date}}</p>
+                          </Col>
+                        </Row>
+                        <card
+                          style="margin-top:5px; background-color:#e5eff2"
+                          :bordered="false"
+                          :dis-hover="true"
+                        >
+                          <Row style="height:20px;line-height:20px; text-align: center">
+                            <Col span="4">
+                              <strong>Product Information:</strong>
+                            </Col>
+                            <Col span="5">
+                              <p>Name: {{order.product.pid}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Type: {{order.product.pType}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Color: {{order.product.color}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Size: {{order.product.size}}</p>
+                            </Col>
+                          </Row>
+                        </card>
+                        <Row
+                          style="height:20px;line-height:20px; margin-top:10px; margin-bottom:20px; text-align: center"
+                        >
+                          <Col span="4">
+                            <p style="color:#9ea7b4">Total Price</p>
+                            <h2>${{order.fee}}</h2>
+                          </Col>
+                          <Col span="4">
+                            <p style="color:#9ea7b4">Quantity</p>
+                            <h2>{{order.amount}}</h2>
+                          </Col>
+                          <div v-if="order.confirmedState == false">
+                            <Col span="2" offset="12">
+                              <Button type="success" @click="comfirmOrder(order)">Comfirm</Button>
+                            </Col>
+                            <Col span="2">
+                              <Button type="error" @click="delectOrder(order)">Delete</Button>
+                            </Col>
+                          </div>
+                        </Row>
+                      </card>
+                    </div>
+                </div>
+              </div>
+              <div v-else> 
+                <div v-for="order in orders">
+                  <div v-if="order.owner == userCookieName">
+                    <div v-if="order.confirmedState == orderState">
+                      <card style="margin-top:10px;">
+                        <Row style="height:30px;line-height:30px; text-align: center">
+                          <Col span="4">
+                            <h4>{{order.oid}}</h4>
+                          </Col>
+                          <Col span="4">
+                            <h4>{{order.owner}}</h4>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.cname}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.phoneNumber}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.address}}</p>
+                          </Col>
+                          <Col span="4">
+                            <p>{{order.date}}</p>
+                          </Col>
+                        </Row>
+                        <card
+                          style="margin-top:5px; background-color:#e5eff2"
+                          :bordered="false"
+                          :dis-hover="true"
+                        >
+                          <Row style="height:20px;line-height:20px; text-align: center">
+                            <Col span="4">
+                              <strong>Product Information:</strong>
+                            </Col>
+                            <Col span="5">
+                              <p>Name: {{order.product.pid}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Type: {{order.product.pType}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Color: {{order.product.color}}</p>
+                            </Col>
+                            <Col span="5">
+                              <p>Size: {{order.product.size}}</p>
+                            </Col>
+                          </Row>
+                        </card>
+                        <Row
+                          style="height:20px;line-height:20px; margin-top:10px; margin-bottom:20px; text-align: center"
+                        >
+                          <Col span="4">
+                            <p style="color:#9ea7b4">Total Price</p>
+                            <h2>${{order.fee}}</h2>
+                          </Col>
+                          <Col span="4">
+                            <p style="color:#9ea7b4">Quantity</p>
+                            <h2>{{order.amount}}</h2>
+                          </Col>
+                          <div v-if="order.confirmedState == false">
+                            <Col span="2" offset="12">
+                              <Button type="success" @click="comfirmOrder(order)">Comfirm</Button>
+                            </Col>
+                            <Col span="2">
+                              <Button type="error" @click="delectOrder(order)">Delete</Button>
+                            </Col>
+                          </div>
+                        </Row>
+                      </card>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Col>
@@ -137,6 +213,7 @@ export default {
       productItem: {},
       confirmedState: false,
       isShowSubmitbutton: 0,
+      userCookieName: "",
       isName: false,
       re: /^[1-9]+[0-9]*]*$/
     };
@@ -221,6 +298,7 @@ export default {
   created: async function() {
     this.getAllOrders();
     console.log(this.orders);
+    this.userCookieName = this.$cookieStore.getCookie("username");
   }
 };
 </script>

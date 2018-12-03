@@ -12,8 +12,8 @@
               <Button type="primary" @click="toAddMessage">Add Message</Button>
             </Col>
             <Col span="18">
-              <div v-for="message in messages">
-                <div>
+              <div v-if="userCookieName == 'Company'">
+                <div v-for="message in messages">
                   <card style="margin-bottom:10px;">
                     <Row>
                       <Col span="4">
@@ -60,6 +60,56 @@
                   </card>
                 </div>
               </div>
+              <div v-else>
+                <div v-for="message in messages">
+                  <div v-if="message.owner == userCookieName">
+                    <card style="margin-bottom:10px;">
+                      <Row>
+                        <Col span="4">
+                          <h2>{{message.owner}}</h2>
+                          {{message.content}}
+                        </Col>
+                        <Col span="19" offset="1">
+                          <card
+                            style="margin-top:5px; background-color:#e5eff2"
+                            :bordered="false"
+                            :dis-hover="true"
+                          >
+                            <Row style="text-align: center">
+                              <Col span="4">
+                                <strong>Product Information:</strong>
+                              </Col>
+                              <Col span="4">
+                                <p>Name: {{message.product.pid}}</p>
+                              </Col>
+                              <Col span="4">
+                                <p>Type: {{message.product.pType}}</p>
+                              </Col>
+                              <Col span="4">
+                                <p>Color: {{message.product.color}}</p>
+                              </Col>
+                              <Col span="4">
+                                <p>Size: {{message.product.size}}</p>
+                              </Col>
+                              <Col span="4">
+                                <p>Price: {{message.product.price}}</p>
+                              </Col>
+                            </Row>
+                          </card>
+                        </Col>
+                      </Row>
+                      <Row style="margin-top:10px;">
+                        <Col span="2" offset="20">
+                          <Button @click="toEditMessage(message)">Edit</Button>
+                        </Col>
+                        <Col span="2">
+                          <Button type="error" @click="delectMessage(message)">Delete</Button>
+                        </Col>
+                      </Row>
+                    </card>
+                  </div>
+                </div>
+              </div>
             </Col>
           </Row>
         </div>
@@ -90,7 +140,11 @@
                   </Col>
                   <Col span="15" offset="1">
                     <Select v-model="messageProduct" placeholder="Select a color">
-                      <Option v-for="item in productList" :value="item.pid" :key="item.id">{{ item.pid }}</Option>
+                      <Option
+                        v-for="item in productList"
+                        :value="item.pid"
+                        :key="item.id"
+                      >{{ item.pid }}</Option>
                     </Select>
                   </Col>
                 </Row>
@@ -115,7 +169,7 @@
 </template>
 <script>
 export default {
-  name: "manageProduct",
+  name: "manageMessage",
   components: {},
   data() {
     return {
@@ -127,17 +181,18 @@ export default {
       messages: new Array(),
       productList: [],
       isShowSubmitbutton: 0,
+      userCookieName: "",
       re: /^[1-9]+[0-9]*]*$/
     };
   },
   methods: {
-    async toAddMessage () {
+    async toAddMessage() {
       await this.getProductList();
       this.isShowSubmitbutton = 0;
       this.isShow0 = false;
       this.isShow1 = true;
     },
-    async toEditMessage (message) {
+    async toEditMessage(message) {
       this.messageId = message.id;
       this.messageText = message.content;
       this.messageProduct = message.pid;
@@ -153,7 +208,7 @@ export default {
       this.isShow0 = true;
       this.isShow1 = false;
     },
-    async createNewMessage () {
+    async createNewMessage() {
       if (this.messageText == "" || this.messageProduct == "") {
         alert("Input Data error!");
       } else {
@@ -176,7 +231,7 @@ export default {
           });
       }
     },
-    async editMessage () {
+    async editMessage() {
       if (this.messageText == "" || this.messageProduct == "") {
         alert("Input Data error!");
       } else {
@@ -200,7 +255,7 @@ export default {
           });
       }
     },
-    async getMessageList () {
+    async getMessageList() {
       var that = this;
       await this.axios
         .get("http://localhost:1337/message/show")
@@ -223,7 +278,7 @@ export default {
           console.log(error);
         });
     },
-    async findOneProduct () {
+    async findOneProduct() {
       for (var i = 0; i < this.messages.length; i++) {
         var that = this;
         await this.axios
@@ -236,12 +291,12 @@ export default {
           });
       }
     },
-    async getAllMessage () {
+    async getAllMessage() {
       this.messages = new Array();
       await this.getMessageList();
       await this.findOneProduct();
     },
-    async delectMessage (message) {
+    async delectMessage(message) {
       var that = this;
       await this.axios
         .post("http://localhost:1337/message/delete", message)
@@ -254,7 +309,7 @@ export default {
           console.log(error);
         });
     },
-    async getProductList () {
+    async getProductList() {
       var that = this;
       await this.axios
         .get("http://localhost:1337/product/show")
@@ -270,6 +325,7 @@ export default {
   created: function() {
     this.getAllMessage();
     console.log(this.messages);
+    this.userCookieName = this.$cookieStore.getCookie("username");
   }
 };
 </script>
