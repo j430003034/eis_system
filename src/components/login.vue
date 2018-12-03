@@ -67,7 +67,7 @@ export default {
               that.$cookieStore.setCookie(
                 "username",
                 that.formInline.username,
-                60
+                172800
               );
               console.log(that.$cookieStore.getCookie("username"));
               that.$Message.success("Success!");
